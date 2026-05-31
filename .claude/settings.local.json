@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd /d D:developenvironmentjavacodeblog)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-turbopack)",
+      "Bash(echo:*)",
+      "Bash(\"D:/developenvironment/Git/bin/bash.exe\" -c \"cd 'D:/developenvironment/java/code/blog' && npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias '@/*' --no-turbopack\")",
+      "Bash(export PATH=\"/d/developenvironment/Git/bin:$PATH\")",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(ls:*)",
+      "Bash(npx tsc:*)",
+      "Bash(Get-ChildItem -Recurse -Depth 2 -Name \"D:\\\\developenvironment\\\\java\\\\code\\\\blog\")",
+      "Bash(Select-Object -First 200)"
+    ]
+  }
+}

@@ -1,0 +1,246 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ── Chinese font stack ─────────────────────────────────────── */
+:root {
+  --font-cn: "Noto Sans SC", "PingFang SC", "HarmonyOS Sans",
+    "MiSans", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #08080d;
+  color: #fff;
+  font-family: var(--font-geist-sans), var(--font-cn);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── CJK typography refinements ──────────────────────────────── */
+.text-cn {
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+}
+
+h1:lang(zh),
+h2:lang(zh),
+h3:lang(zh) {
+  letter-spacing: 0.02em;
+}
+
+/* ── Custom scrollbar ────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ── Blinking cursor ─────────────────────────────────────────── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 0.8s infinite;
+}
+
+/* ── Blog markdown prose ─────────────────────────────────────── */
+.prose-custom {
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.85;
+  font-size: 0.9375rem;
+}
+
+.prose-custom h2 {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.prose-custom h3 {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-custom p {
+  margin-bottom: 1.25rem;
+}
+
+.prose-custom a {
+  color: rgba(139, 140, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.prose-custom a:hover {
+  color: rgba(139, 140, 255, 0.95);
+}
+
+.prose-custom strong {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+.prose-custom ul,
+.prose-custom ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.prose-custom li {
+  margin-bottom: 0.35rem;
+}
+
+.prose-custom li::marker {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.prose-custom blockquote {
+  border-left: 2px solid rgba(255, 255, 255, 0.08);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+}
+
+.prose-custom blockquote p {
+  margin-bottom: 0.5rem;
+}
+
+.prose-custom hr {
+  border-color: rgba(255, 255, 255, 0.05);
+  margin: 2rem 0;
+}
+
+/* Inline code */
+.prose-custom code:not(pre code) {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.75);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-family: var(--font-geist-mono), "Menlo", "Consolas", monospace;
+}
+
+/* Code blocks */
+.prose-custom pre {
+  background: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+
+.prose-custom pre code {
+  font-family: var(--font-geist-mono), "Menlo", "Consolas", monospace;
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* Tables */
+.prose-custom table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+}
+
+.prose-custom th {
+  text-align: left;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.prose-custom td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.prose-custom img {
+  border-radius: 12px;
+  max-width: 100%;
+  margin: 1.5rem 0;
+}
+
+/* ── Highlight.js dark theme ─────────────────────────────────── */
+/* gh-dark is a compact, warm dark scheme. We override bg to let our pre styling through. */
+@import "highlight.js/styles/github-dark.css" layer(hljs);
+
+@layer hljs {
+  .hljs {
+    background: transparent !important;
+    color: #c9d1d9;
+  }
+  .hljs-comment,
+  .hljs-quote { color: #8b949e; }
+  .hljs-keyword,
+  .hljs-selector-tag { color: #ff7b72; }
+  .hljs-string,
+  .hljs-addition { color: #a5d6ff; }
+  .hljs-title,
+  .hljs-section { color: #d2a8ff; }
+  .hljs-type,
+  .hljs-built_in { color: #ffa657; }
+  .hljs-number,
+  .hljs-literal { color: #79c0ff; }
+  .hljs-attr,
+  .hljs-variable { color: #79c0ff; }
+}
+
+/* ── Atmosphere keyframes ─────────────────────────────────────── */
+
+@keyframes aurora-shift-1 {
+  0%, 100% { background-position: 0% 0%; }
+  25%  { background-position: 30% 20%; }
+  50%  { background-position: 15% 40%; }
+  75%  { background-position: -20% 10%; }
+}
+
+@keyframes aurora-shift-2 {
+  0%, 100% { background-position: 100% 100%; }
+  33%  { background-position: 70% 60%; }
+  66%  { background-position: 110% 80%; }
+}
+
+@keyframes aurora-shift-3 {
+  0%, 100% { background-position: 50% 50%; }
+  50%  { background-position: 30% 70%; }
+}
+
+@keyframes scanline {
+  0%   { top: -2px; }
+  100% { top: 100%; }
+}
