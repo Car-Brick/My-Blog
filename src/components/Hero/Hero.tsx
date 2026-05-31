@@ -138,7 +138,7 @@ export default function Hero() {
 
       {/* Layer 10: Content */}
       <motion.div
-        className="relative z-20 w-full max-w-[75%] 2xl:max-w-[66%] mx-auto px-6 md:px-10"
+        className="relative z-20 w-full max-w-5xl mx-auto px-6 md:px-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -194,7 +194,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.8, delay: 0.6, ease: "easeOut" }}
-            className="relative shrink-0 select-none"
+            className="hidden md:block relative shrink-0 select-none"
             style={{
               width: "clamp(14rem, 24vw, 22rem)",
               height: "clamp(18rem, 34vw, 30rem)",
