@@ -22,6 +22,9 @@ export const metadata: Metadata = {
   title: "开发者主页 — 后端 / AI / 分布式系统",
   description:
     "个人技术博客，专注于后端架构、AI 基础设施与分布式系统工程。",
+  icons: {
+    icon: "/logo.jpg",
+  },
 };
 
 export default function RootLayout({
