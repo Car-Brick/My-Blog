@@ -54,7 +54,7 @@ export default function Navbar() {
       {/* ── Navbar ──────────────────────────────────────────────── */}
       <header
         className={[
-          "fixed top-0 inset-x-0 z-50 h-[52px] flex items-center transition-all duration-500",
+          "fixed top-0 inset-x-0 z-50 h-28 flex items-end transition-all duration-500",
           scrolled
             ? "bg-[#08080d]/75 backdrop-blur-xl border-b border-white/[0.06]"
             : "bg-[#08080d]/25 backdrop-blur-[3px] border-b border-white/[0.02]",
@@ -64,7 +64,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex flex-col items-center mt-4 hover:opacity-80 transition-opacity duration-300"
+            className="flex flex-col items-center hover:opacity-80 transition-opacity duration-300"
           >
             <span className="text-xs font-semibold tracking-widest text-white/60 mb-1">
               车 专
