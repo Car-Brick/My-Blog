@@ -62,13 +62,18 @@ export default function Navbar() {
       >
         <nav className="w-full max-w-5xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
+          <Link
+            href="/"
+            className="flex flex-col items-center mt-1 hover:opacity-80 transition-opacity duration-300"
+          >
+            <span className="text-[11px] font-semibold tracking-widest text-white/50 mb-0.5">
+              车 专
+            </span>
             <Image
               src="/logo.jpg"
               alt="Logo"
-              width={32}
-              height={32}
-              className="hover:opacity-80 transition-opacity duration-300"
+              width={48}
+              height={48}
             />
           </Link>
 
