@@ -64,7 +64,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src="/王也.jpg"
+              src="/logo.jpg"
               alt="Logo"
               width={32}
               height={32}
