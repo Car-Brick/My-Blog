@@ -14,7 +14,7 @@ export default function PageShell({
   children,
 }: PageShellProps) {
   return (
-    <main className="min-h-screen pt-28 pb-32">
+    <main className="min-h-screen pt-20 pb-32">
       <div className="max-w-5xl mx-auto px-6">
         {/* Page header — bilingual title */}
         <header className="mb-20">

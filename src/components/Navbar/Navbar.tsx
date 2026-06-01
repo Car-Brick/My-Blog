@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,11 +16,23 @@ const NAV_ITEMS = [
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const lastScrollY = useRef(0);
 
   // ── Scroll detection ──────────────────────────────────────────
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      setScrolled(currentY > 30);
+      // Hide when scrolling down (past 80px), show when scrolling up
+      if (currentY > 80) {
+        setHidden(currentY > lastScrollY.current);
+      } else {
+        setHidden(false);
+      }
+      lastScrollY.current = currentY;
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
@@ -54,28 +66,32 @@ export default function Navbar() {
       {/* ── Navbar ──────────────────────────────────────────────── */}
       <header
         className={[
-          "fixed top-0 inset-x-0 z-50 h-28 flex items-end transition-all duration-500",
+          "fixed top-0 inset-x-0 z-50 flex items-center transition-all duration-300",
+          hidden ? "-translate-y-full" : "translate-y-0",
           scrolled
             ? "bg-[#08080d]/75 backdrop-blur-xl border-b border-white/[0.06]"
             : "bg-[#08080d]/25 backdrop-blur-[3px] border-b border-white/[0.02]",
         ].join(" ")}
+        style={{ height: "80px" }}
       >
-        <nav className="w-full max-w-5xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo */}
+        {/* Logo — pinned to left edge */}
           <Link
             href="/"
-            className="flex flex-col items-center hover:opacity-80 transition-opacity duration-300"
+            className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-3 hover:opacity-80 transition-opacity duration-300 z-10"
           >
-            <span className="text-xs font-semibold tracking-widest text-white/60 mb-1">
-              车 专
-            </span>
             <Image
               src="/logo.jpg"
               alt="Logo"
               width={80}
               height={80}
+              className="shrink-0"
             />
+            <span className="text-sm font-semibold tracking-widest text-white/60">
+              车 专
+            </span>
           </Link>
+
+        <nav className="w-full max-w-5xl mx-auto px-6 flex items-center justify-end">
 
           {/* Desktop links */}
           <ul className="hidden md:flex items-center gap-0.5">

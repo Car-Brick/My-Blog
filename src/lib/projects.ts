@@ -4,14 +4,28 @@ import matter from "gray-matter";
 
 const projectsDirectory = path.join(process.cwd(), "content/projects");
 
-export interface ProjectMeta {
+// ── Types ──────────────────────────────────────────────
+
+export interface ProjectGroupMeta {
   slug: string;
   title: string;
   tags: string;
   summary: string;
+  articleCount: number;
 }
 
-export interface Project extends ProjectMeta {
+export interface ProjectArticleMeta {
+  slug: string;
+  title: string;
+  summary: string;
+}
+
+export interface ProjectGroup extends ProjectGroupMeta {
+  articles: ProjectArticleMeta[];
+}
+
+export interface ProjectArticle extends ProjectArticleMeta {
+  tags: string;
   content: string;
 }
 
@@ -20,6 +34,21 @@ interface Frontmatter {
   tags?: string;
   summary?: string;
 }
+
+interface ArticleEntry {
+  slug: string;
+  filePath: string;
+}
+
+interface ProjectEntry {
+  slug: string;
+  title: string;
+  tags: string;
+  summary: string;
+  articles: ArticleEntry[];
+}
+
+// ── Slug helper ───────────────────────────────────────
 
 function segmentToSlug(segment: string): string {
   return segment
@@ -32,82 +61,150 @@ function segmentToSlug(segment: string): string {
     .replace(/^-|-$/g, "");
 }
 
-function toUrlSlug(relativePath: string): string {
-  return relativePath
-    .replace(/\\/g, "/")
-    .split("/")
-    .map(segmentToSlug)
-    .filter(Boolean)
-    .join("--");
-}
+// ── Internal: build project map ───────────────────────
 
-function findMdFiles(
-  dir: string,
-  base: string = "",
-): { relativePath: string; fullPath: string }[] {
-  const results: { relativePath: string; fullPath: string }[] = [];
-  if (!fs.existsSync(dir)) return results;
+function buildProjectMap(): Map<string, ProjectEntry> {
+  const map = new Map<string, ProjectEntry>();
+  if (!fs.existsSync(projectsDirectory)) return map;
 
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const fullPath = path.join(dir, entry.name);
-    const relativePath = base ? `${base}/${entry.name}` : entry.name;
+  for (const entry of fs.readdirSync(projectsDirectory, { withFileTypes: true })) {
+    if (entry.name.startsWith(".")) continue;
+
     if (entry.isDirectory()) {
-      results.push(...findMdFiles(fullPath, relativePath));
+      const projectSlug = segmentToSlug(entry.name);
+      const articles: ArticleEntry[] = [];
+      const dirPath = path.join(projectsDirectory, entry.name);
+
+      if (fs.existsSync(dirPath)) {
+        for (const f of fs.readdirSync(dirPath)) {
+          if (f.endsWith(".md")) {
+            articles.push({
+              slug: segmentToSlug(f),
+              filePath: path.join(dirPath, f),
+            });
+          }
+        }
+      }
+
+      let title = projectSlug;
+      let tags = "";
+      let summary = "";
+      if (articles.length > 0) {
+        try {
+          const raw = fs.readFileSync(articles[0].filePath, "utf-8");
+          const { data } = matter(raw);
+          const fm = data as Frontmatter;
+          title = fm.title ?? projectSlug;
+          tags = fm.tags ?? "";
+          summary = fm.summary ?? "";
+        } catch { /* keep defaults */ }
+      }
+
+      map.set(projectSlug, { slug: projectSlug, title, tags, summary, articles });
     } else if (entry.name.endsWith(".md")) {
-      results.push({ relativePath, fullPath });
+      const projectSlug = segmentToSlug(entry.name);
+      const filePath = path.join(projectsDirectory, entry.name);
+
+      let title = projectSlug;
+      let tags = "";
+      let summary = "";
+      try {
+        const raw = fs.readFileSync(filePath, "utf-8");
+        const { data } = matter(raw);
+        const fm = data as Frontmatter;
+        title = fm.title ?? projectSlug;
+        tags = fm.tags ?? "";
+        summary = fm.summary ?? "";
+      } catch { /* keep defaults */ }
+
+      map.set(projectSlug, {
+        slug: projectSlug,
+        title,
+        tags,
+        summary,
+        articles: [{ slug: projectSlug, filePath }],
+      });
     }
   }
-  return results;
-}
 
-function buildSlugMap(): Map<string, string> {
-  if (!fs.existsSync(projectsDirectory)) return new Map();
-  const map = new Map<string, string>();
-  for (const { relativePath } of findMdFiles(projectsDirectory)) {
-    const slug = toUrlSlug(relativePath);
-    if (slug) map.set(slug, relativePath);
-  }
   return map;
 }
 
-export function getAllProjects(): ProjectMeta[] {
-  if (!fs.existsSync(projectsDirectory)) return [];
+// ── Public API ─────────────────────────────────────────
 
-  return findMdFiles(projectsDirectory).map(({ relativePath, fullPath }) => {
-    const slug = toUrlSlug(relativePath);
-    const raw = fs.readFileSync(fullPath, "utf-8");
-    const { data } = matter(raw);
-    const fm = data as Frontmatter;
-
-    return {
-      slug,
-      title: fm.title ?? slug,
-      tags: fm.tags ?? "",
-      summary: fm.summary ?? "",
-    };
-  });
+export function getProjectGroups(): ProjectGroupMeta[] {
+  const map = buildProjectMap();
+  return Array.from(map.values()).map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    tags: p.tags,
+    summary: p.summary,
+    articleCount: p.articles.length,
+  }));
 }
 
-export function getProjectBySlug(slug: string): Project | null {
-  const slugMap = buildSlugMap();
-  const relativePath = slugMap.get(slug);
-  if (!relativePath) return null;
-  const filePath = path.join(projectsDirectory, relativePath);
-  if (!fs.existsSync(filePath)) return null;
+export function getProjectGroup(slug: string): ProjectGroup | null {
+  const map = buildProjectMap();
+  const entry = map.get(slug);
+  if (!entry) return null;
+
+  const articles: ProjectArticleMeta[] = entry.articles.map((a) => {
+    let title = a.slug;
+    let summary = "";
+    try {
+      const raw = fs.readFileSync(a.filePath, "utf-8");
+      const { data } = matter(raw);
+      const fm = data as Frontmatter;
+      title = fm.title ?? a.slug;
+      summary = fm.summary ?? "";
+    } catch { /* keep defaults */ }
+    return { slug: a.slug, title, summary };
+  });
+
+  return {
+    slug: entry.slug,
+    title: entry.title,
+    tags: entry.tags,
+    summary: entry.summary,
+    articleCount: articles.length,
+    articles,
+  };
+}
+
+export function getProjectArticle(
+  projectSlug: string,
+  articleSlug: string,
+): ProjectArticle | null {
+  const map = buildProjectMap();
+  const entry = map.get(projectSlug);
+  if (!entry) return null;
+
+  const article = entry.articles.find((a) => a.slug === articleSlug);
+  if (!article) return null;
 
   try {
-    const raw = fs.readFileSync(filePath, "utf-8");
+    const raw = fs.readFileSync(article.filePath, "utf-8");
     const { data, content } = matter(raw);
     const fm = data as Frontmatter;
-
     return {
-      slug,
-      title: fm.title ?? slug,
-      tags: fm.tags ?? "",
+      slug: article.slug,
+      title: fm.title ?? article.slug,
       summary: fm.summary ?? "",
+      tags: fm.tags ?? "",
       content,
     };
   } catch {
     return null;
   }
+}
+
+export function getAllProjectArticleParams(): { project: string; article: string }[] {
+  const map = buildProjectMap();
+  const params: { project: string; article: string }[] = [];
+  for (const [projectSlug, entry] of map) {
+    for (const article of entry.articles) {
+      params.push({ project: projectSlug, article: article.slug });
+    }
+  }
+  return params;
 }

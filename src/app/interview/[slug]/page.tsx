@@ -29,7 +29,7 @@ export default async function InterviewDetailPage({ params }: Props) {
   if (!entry) notFound();
 
   return (
-    <main className="min-h-screen pt-28 pb-32">
+    <main className="min-h-screen pt-20 pb-32">
       <article className="max-w-3xl mx-auto px-6">
         <Link
           href="/interview"

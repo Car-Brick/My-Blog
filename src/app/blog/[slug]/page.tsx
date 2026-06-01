@@ -30,7 +30,7 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) notFound();
 
   return (
-    <main className="min-h-screen pt-28 pb-32">
+    <main className="min-h-screen pt-20 pb-32">
       <article className="max-w-3xl mx-auto px-6">
         {/* Back link */}
         <Link

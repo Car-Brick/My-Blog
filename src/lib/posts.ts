@@ -17,8 +17,16 @@ export interface Post extends PostMeta {
 
 interface Frontmatter {
   title?: string;
-  date?: string;
+  date?: string | Date;
   summary?: string;
+}
+
+function normalizeDate(value?: string | Date): string {
+  if (!value) return "";
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 10);
+  }
+  return value;
 }
 
 function toUrlSlug(filename: string): string {
@@ -60,7 +68,7 @@ export function getAllPosts(): PostMeta[] {
       return {
         slug,
         title: fm.title ?? slug,
-        date: fm.date ?? "",
+        date: normalizeDate(fm.date),
         summary: fm.summary ?? "",
       };
     })
@@ -88,7 +96,7 @@ export function getPostBySlug(slug: string): Post | null {
     return {
       slug,
       title: fm.title ?? slug,
-      date: fm.date ?? "",
+      date: normalizeDate(fm.date),
       summary: fm.summary ?? "",
       content,
     };
