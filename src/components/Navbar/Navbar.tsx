@@ -64,16 +64,16 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex flex-col items-center mt-1 hover:opacity-80 transition-opacity duration-300"
+            className="flex flex-col items-center mt-4 hover:opacity-80 transition-opacity duration-300"
           >
-            <span className="text-[11px] font-semibold tracking-widest text-white/50 mb-0.5">
+            <span className="text-xs font-semibold tracking-widest text-white/60 mb-1">
               车 专
             </span>
             <Image
               src="/logo.jpg"
               alt="Logo"
-              width={48}
-              height={48}
+              width={80}
+              height={80}
             />
           </Link>
 
