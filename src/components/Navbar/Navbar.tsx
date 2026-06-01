@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -61,11 +62,14 @@ export default function Navbar() {
       >
         <nav className="w-full max-w-5xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
-          <Link
-            href="/"
-            className="text-sm font-semibold tracking-tight text-white/80 hover:text-white transition-colors duration-300"
-          >
-            车 专
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/王也.jpg"
+              alt="Logo"
+              width={32}
+              height={32}
+              className="hover:opacity-80 transition-opacity duration-300"
+            />
           </Link>
 
           {/* Desktop links */}
