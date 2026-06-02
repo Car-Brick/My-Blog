@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "projects/project-alpha.md",
-                "mode": "source",
+                "file": "projects/超级智能体/2、RAG 切块架构升级.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "project-alpha"
+              "title": "2、RAG 切块架构升级"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 275.5
   },
   "right": {
     "id": "b0ea20b40c05b192",
@@ -182,20 +182,27 @@
   },
   "active": "ca614b6fb857e1a8",
   "lastOpenFiles": [
-    "blog/ai-infrastructure-future.md",
+    "projects/超级智能体/3、智能体风险管控.md",
+    "projects/超级智能体/2、RAG 切块架构升级.md",
+    "projects/超级智能体/1、五步前置编排器 + 三级路由.md",
+    "blog/Super Agent-Chat.md",
+    "projects/超级智能体",
     "blog/rethinking-backend-architecture.md",
     "blog/building-reliable-distributed-systems.md",
+    "projects/畅通购票服务/分库分表.md",
+    "projects/畅通购票服务/为什么说购票人至关重要.md",
+    "creation/subject/eb05ef0c3aad4981af85e1f84c8d3db3.md",
+    "projects/Learning-System.md",
+    "projects/Ticket-Sales.md",
+    "projects/畅通购票服务",
+    "Step.md",
     "interview/3、Full-Stack Developer-上海乐庆通.md",
     "interview/4、Full-Stack Developer-联川生物.md",
     "interview/5、Go-Back-Developer-北京智汇核科技.md",
     "interview/2、Back-Developer-浑身解数.md",
     "interview/1、Full-Stack Developer-陌远科技.md",
-    "projects/project-gamma.md",
-    "projects/project-beta.md",
-    "projects/project-alpha.md",
     "2026-05-12.md",
     "about/about.md",
-    "creation/subject/eb05ef0c3aad4981af85e1f84c8d3db3.md",
     "creation/subject",
     "creation"
   ]

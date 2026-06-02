@@ -27,7 +27,8 @@ All content is stored as Markdown files with YAML frontmatter in `content/` (blo
 | `/blog` | `blog/page.tsx` | `force-dynamic` |
 | `/blog/[slug]` | `blog/[slug]/page.tsx` | `generateStaticParams` (SSG) |
 | `/projects` | `projects/page.tsx` | `force-dynamic` |
-| `/projects/[slug]` | `projects/[slug]/page.tsx` | `generateStaticParams` |
+| `/projects/[project]` | `projects/[project]/page.tsx` | `generateStaticParams` (first article) |
+| `/projects/[project]/[article]` | `projects/[project]/[article]/page.tsx` | `generateStaticParams` |
 | `/interview` | `interview/page.tsx` | `force-dynamic` |
 | `/interview/[slug]` | `interview/[slug]/page.tsx` | `generateStaticParams` |
 
@@ -38,8 +39,8 @@ List pages use `force-dynamic` so they re-read the `content/` directory on every
 ### Content system
 
 4 library files in `src/lib/` parse `content/`:
-- **posts.ts** — `getAllPosts()`, `getPostBySlug(slug)` (frontmatter: title, date, summary)
-- **projects.ts** — `getAllProjects()`, `getProjectBySlug(slug)` (frontmatter: title, tags, summary)
+- **posts.ts** — `getAllPosts()`, `getPostBySlug(slug)`. Uses `normalizeDate()` to handle YAML Date objects (from unquoted dates like `date: 2026-04-20`). Frontmatter: title, date, summary.
+- **projects.ts** — `getProjectGroups()`, `getProjectGroup(slug)`, `getProjectArticle(projectSlug, articleSlug)`, `getAllProjectArticleParams()`. **Folder = project**, `.md` files inside = articles. Flat `.md` files at root = single-article projects. Frontmatter: title, tags, summary.
 - **interviews.ts** — `getAllInterviews()`, `getInterviewBySlug(slug)` (frontmatter: company, role, date, outcome)
 - **about.ts** — reads first `.md` from `content/about/` (frontmatter: title, titleEn)
 
@@ -61,8 +62,9 @@ Atmosphere primitives are composable client components. Hero's `ParticleBackgrou
 
 ### Key components
 
-- **PageShell** — server component, wraps page content with `pt-28 pb-32`, title header with bilingual support (`title` + optional `titleEn`)
-- **Navbar** — fixed glass-morphism nav, active route dot via Framer Motion `layoutId`, mobile hamburger menu
+- **PageShell** — server component, wraps page content with `pt-20 pb-32`, title header with bilingual support (`title` + optional `titleEn`)
+- **Navbar** — fixed glass-morphism nav, height 80px, active route dot via Framer Motion `layoutId`, mobile hamburger menu. Logo absolutely positioned at left edge, "车 专" text to right of image. Auto-hide on scroll down (past 80px), auto-show on scroll up.
+- **ProjectSidebar** — client component, collapsible sidebar (240px → 40px), article list with active highlight, sticky `top-20`. Uses `usePathname()` to detect current article.
 - **Hero** — left-right split layout: left side has subtitle, typewriter (`$` prompt), buttons; right side has "车专" in diagonal (车 top-right, 专 bottom-left) using Zhi Mang Xing calligraphy font
 - **MouseGlow** — 400x400px radial gradient tracking mouse via `useMouseGlow` hook (lerp-based smoothing, RAF loop)
 
@@ -76,3 +78,5 @@ Atmosphere primitives are composable client components. Hero's `ParticleBackgrou
 - Calligraphy display font: Zhi Mang Xing (Google Fonts CDN)
 - Code font: Geist Mono (next/font/google)
 - Shell environment is broken — run `npm install && npm run dev` manually
+- **Chinese URL params**: Next.js on Windows may not decode Chinese characters in dynamic route params. Use `decodeURIComponent()` in `[project]` and `[article]` pages.
+- **Navbar height**: All pages use `pt-20` (80px) to offset the navbar. Sidebar uses `top-20` for sticky positioning.

@@ -13,7 +13,12 @@
       "Bash(Get-ChildItem -Recurse -Depth 2 -Name \"D:\\\\developenvironment\\\\java\\\\code\\\\blog\")",
       "Bash(Select-Object -First 200)",
       "WebSearch",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npm.cmd run:*)",
+      "Bash(SHELL=/usr/bin/bash /usr/bin/bash -c 'cd \"D:/developenvironment/java/code/blog\" && git status')",
+      "Bash(\"D:/developenvironment/Git/bin/bash.exe\" -c \"cd 'D:/developenvironment/java/code/blog' && git status\")",
+      "Bash(cd:*)",
+      "Bash(cmd /c \"del /f \\\\\"D:\\\\developenvironment\\\\java\\\\code\\\\blog\\\\src\\\\app\\\\projects\\\\[slug]\\\\page.tsx\\\\\"\")"
     ]
   }
 }
