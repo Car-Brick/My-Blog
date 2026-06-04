@@ -86,7 +86,7 @@ function buildProjectMap(): Map<string, ProjectEntry> {
         }
       }
 
-      let title = projectSlug;
+      let title = entry.name;
       let tags = "";
       let summary = "";
       if (articles.length > 0) {
@@ -94,7 +94,6 @@ function buildProjectMap(): Map<string, ProjectEntry> {
           const raw = fs.readFileSync(articles[0].filePath, "utf-8");
           const { data } = matter(raw);
           const fm = data as Frontmatter;
-          title = fm.title ?? projectSlug;
           tags = fm.tags ?? "";
           summary = fm.summary ?? "";
         } catch { /* keep defaults */ }

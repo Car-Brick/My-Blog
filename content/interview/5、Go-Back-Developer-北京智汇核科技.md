@@ -3,7 +3,7 @@ company: 北京智汇核科技
 role: 后端开发
 date:
   - 2026-5-12
-outcome: 一面
+outcome: 技术面
 ---
 ## 面试流程
 - 技术面+Boos面

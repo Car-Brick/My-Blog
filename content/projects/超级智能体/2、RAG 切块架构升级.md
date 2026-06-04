@@ -349,3 +349,5 @@ parentScore = bestChildScore × (1 + 0.12 × 额外命中数 + 0.10 × 多通道
 5. **三层证据预算**：总量 5200 / 单问题 2200 / 单父块 2200，防止 Prompt 溢出
 6. **双重去重**：块级按 `(canonicalPath||itemIndex||text)` 去重，Prompt 级按 `parentBlockId` 去重，避免 token 浪费
 7. **异步全流程**：Kafka 驱动，从文档解析 → 策略推荐 → 用户确认 → 切块 → 向量化 → 索引构建，全链路异步可观测
+---
+[2、RAG 切块架构升级 技术回答](2、RAG%20切块架构升级%20技术回答.md)
